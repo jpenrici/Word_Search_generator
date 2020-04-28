@@ -28,6 +28,7 @@ mp\listar($palavra->resumo());
 
 $tabuleiro = new Tabuleiro($conjuntoPalavras);
 mp\listar($tabuleiro->resumo());
+mp\listar($tabuleiro->dados);
 
 $tabuleiro->dimensao = 6;
 echo "(0,1) : ".($tabuleiro->posicao(0, 1))."\n";

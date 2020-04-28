@@ -103,6 +103,7 @@ namespace ManipulaPalavras {
 		$conjuntoPalavras = limpar($conjuntoPalavras);
 		$conjuntoPalavras = trocarEspacos($conjuntoPalavras, "-");
 		$conjuntoPalavras = retirarDuplicatas($conjuntoPalavras);
+		$conjuntoPalavras = converterMinusculas($conjuntoPalavras);
 		return $conjuntoPalavras;
 	}
 }

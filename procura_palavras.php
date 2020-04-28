@@ -6,6 +6,7 @@ use ManipulaPalavras as mp;
 class Tabuleiro {
 	public $matriz;		
 	public $dimensao;	// matriz quadrada
+	public $dados;
 	public $quantidadePalavras;
 	public $conjuntoPalavras; 
 
@@ -13,13 +14,13 @@ class Tabuleiro {
 
     	// Namespace ManipulaPalavras
     	$conjuntoPalavras = mp\preparar($conjuntoPalavras);
+    	$this->dados = mp\resumo($conjuntoPalavras);
 
     	$palavras = array();
     	foreach ($conjuntoPalavras as $palavra) {
     		array_push($palavras, new Palavra($palavra));
     	}
     	$this->conjuntoPalavras = $palavras;
-    	$this->quantidadePalavras= count($conjuntoPalavras);
     }
 
     function __destruct() {}
