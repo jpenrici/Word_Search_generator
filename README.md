@@ -1,2 +1,2 @@
-# Crossword_generator
-Experimental crossword generator.
+# Word_Search_generator
+Experimental Word Search generator.
