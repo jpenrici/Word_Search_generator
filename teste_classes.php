@@ -1,6 +1,6 @@
 <?php
 // Carregar funções
-include_once 'palavra_cruzada.php';
+include_once 'procura_palavras.php';
 use ManipulaPalavras as mp;
 
 // Passar um conjunto de palavras
@@ -23,18 +23,27 @@ $conjuntoPalavras = array(
 	array("1", "1")
 );
 
+// Objeto Palavra
 $palavra = new Palavra("Teste");
 mp\listar($palavra->resumo());
 
+// Objeto Tabuleiro
 $tabuleiro = new Tabuleiro($conjuntoPalavras);
 mp\listar($tabuleiro->resumo());
-mp\listar($tabuleiro->dados);
+mp\listar($tabuleiro->getDados());
 
-$tabuleiro->dimensao = 6;
 echo "(0,1) : ".($tabuleiro->posicao(0, 1))."\n";
-echo "6     :\n";
-mp\listar($tabuleiro->coordenada(6));
-echo "(1,2) : ".($tabuleiro->posicao(1, 2))."\n";	
-echo "13    :\n";
-mp\listar($tabuleiro->coordenada(13));	
+echo "10    :\n";
+mp\listar($tabuleiro->coordenada(10));
+echo "(5,2) : ".($tabuleiro->posicao(5, 2))."\n";	
+echo "25    :\n";
+mp\listar($tabuleiro->coordenada(25));
+
+// Checar matriz
+mp\listar($tabuleiro->getMatriz());
+echo $tabuleiro->getTabuleiro();
+
+// Gerar tabuleiro
+$tabuleiro->gerar();
+
 ?>
