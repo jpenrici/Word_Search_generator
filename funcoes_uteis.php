@@ -69,7 +69,12 @@ namespace ManipulaPalavras {
 			$conjuntoPalavras[$i] = $novaPalavra;
 		}
 		return $conjuntoPalavras;
-	}	
+	}
+
+	function embaralhar($conjuntoPalavras) {
+		shuffle($conjuntoPalavras);
+		return $conjuntoPalavras;
+	};	
 
 	// Resumo
 	function resumo($conjuntoPalavras) {
@@ -104,7 +109,10 @@ namespace ManipulaPalavras {
 		$conjuntoPalavras = trocarEspacos($conjuntoPalavras, "-");
 		$conjuntoPalavras = retirarDuplicatas($conjuntoPalavras);
 		$conjuntoPalavras = converterMinusculas($conjuntoPalavras);
-		return $conjuntoPalavras;
+		$conjuntoPalavras = embaralhar($conjuntoPalavras);
+		$resumo = resumo($conjuntoPalavras);
+		$resultado = array('Resumo' => $resumo,'Conjunto' => $conjuntoPalavras);
+		return $resultado;
 	}
 }
 ?>

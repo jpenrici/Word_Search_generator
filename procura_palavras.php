@@ -6,8 +6,9 @@ use ManipulaPalavras as mp;
 define("SUCESSO", 1);
 define("FALHOU", 0);
 define("VAZIO", -1);
-define("TENTATIVAS", 1000);
-define("PORCENTAGEM", 10);
+define("TENTATIVAS",  50);	// inserção de palavra
+define("PORCENTAGEM", 25);	// acrescimo na dimensão da matriz
+define("INDEFINIDO", "não definido");
 
 class Tabuleiro {
 	private $matriz;		// tabuleiro (vetor)
@@ -15,8 +16,9 @@ class Tabuleiro {
 	private $dados;			// detalhes do conjunto de palavras
 	private $quantidadePalavras;
 	private $palavras; 		// array de Objetos Palavra
-	private $celulaVazia;
-	private $entreCelulas;
+	private $celulaVazia;	// marcador de célula vazia
+	private $entreCelulas;	// caracter extra
+	private $porcentagem;	// para regular dimensao
 
     function __construct($conjuntoPalavras) {
 
@@ -28,7 +30,7 @@ class Tabuleiro {
     	$conjuntoPalavras = mp\preparar($conjuntoPalavras);
 
     	// Dados
-    	$this->dados = mp\resumo($conjuntoPalavras);
+    	$this->dados = $conjuntoPalavras['Resumo'];
     	$this->quantidadePalavras = $this->dados['TotalPalavras'];
     	$this->dimensao = $this->dados['TamanhoMaior'];
     	$this->dimensao += intval($this->dimensao * PORCENTAGEM / 100);
@@ -37,9 +39,9 @@ class Tabuleiro {
     	$celulas = $this->dimensao * $this->dimensao;    	
     	$this->matriz = array_fill(0, $celulas, VAZIO);
 
-    	// Carregando palavras
+    	// Carregando conjunto de palavras
     	$palavras = array();
-    	foreach ($conjuntoPalavras as $palavra) {
+    	foreach ($conjuntoPalavras['Conjunto'] as $palavra) {
     		array_push($palavras, new Palavra($palavra));
     	}
     	$this->palavras = $palavras;
@@ -47,6 +49,7 @@ class Tabuleiro {
 
     function __destruct() {}
 
+    // Inserir as palavras na matriz de forma aleatória
     public function gerar() {
     	foreach ($this->palavras as $palavra) {
     		for ($i=0; $i < TENTATIVAS; $i++) {
@@ -56,6 +59,7 @@ class Tabuleiro {
     	}
     }
 
+    // Converte posição de vetor em coordenada de matriz
 	public function coordenada($posicao) {
 		$y = intval($posicao / $this->dimensao);
 		$x = $posicao - $this->dimensao * $y;
@@ -63,6 +67,7 @@ class Tabuleiro {
 		return $resultado;
 	}
 
+	// Converte coordenada da matriz em posição de vetor
 	public function posicao($x, $y) {
 		$resultado = $x + $this->dimensao * $y;
 		return $resultado;
@@ -80,14 +85,22 @@ class Tabuleiro {
 			$this->entreCelulas = $caracter;
 	}
 
+	// Retorna os detalhes do conjunto de palavras
 	public function getDados() {
 		return $this->dados;
 	}
 
+	// Retorna a matriz (vetor)
 	public function getMatriz() {
 		return $this->matriz;
 	}
 
+	/* 
+	 * Retorna a matriz (tabuleiro) com as palavras
+	 * Preenche os espaços vazios (células vazias)
+	 * Insere caracteres extras entre as células
+	 *
+	 */
 	public function getTabuleiro() {
 		$resultado = "";
 		$letras = "abcdefghijklmnopqrstuvwxyz";
@@ -115,15 +128,27 @@ class Tabuleiro {
 		return $resultado;
 	}
 
+	// Visualiza a matriz em formato de texto
 	public function visualizar() {
 		echo $this->getTabuleiro();
 	}
 
+	// Retorna resumo da matriz (tabuleiro)
 	public function resumo() {
-		$resultado = array('palavras' => $this->quantidadePalavras);
+		$resultado = array();
+		$resultado = array(
+			'palavras' => $this->quantidadePalavras,
+			'inseridos' => 0,
+			'falhas' => 0);
+		$inseridos = 0;
     	foreach ($this->palavras as $palavra) {
     		array_push($resultado, $palavra->resumo());
+    		if ($palavra->direcao != INDEFINIDO) {
+    			$inseridos++;
+    		}
     	}
+    	$resultado['inseridos'] = $inseridos;
+    	$resultado['falhas'] = $resultado['palavras'] - $inseridos;
     	return $resultado;
 	}
 
@@ -132,13 +157,13 @@ class Tabuleiro {
     	$x = rand(0, $this->dimensao - 1);
     	$y = rand(0, $this->dimensao - 1); 
 
+		$resultado = $this->inserirDiagonal($palavra, $x, $y);
+		if ($resultado) return SUCESSO;	 
+
 		$resultado = $this->inserirVertical($palavra, $x, $y);
 		if ($resultado) return SUCESSO;	 
 
 		$resultado = $this->inserirHorizontal($palavra, $x, $y);
-		if ($resultado) return SUCESSO;	 
-
-		$resultado = $this->inserirDiagonal($palavra, $x, $y);
 		if ($resultado) return SUCESSO;	 
 
 		return FALHOU;
@@ -219,6 +244,7 @@ class Tabuleiro {
     	return SUCESSO;	
     }    
 
+    // Verifica se coordenada está dentro dos limites da matriz
     private function posicaoValida($x, $y) {
     	if ($x < 0 or $x > $this->dimensao) return FALHOU;
     	if ($y < 0 or $y > $this->dimensao) return FALHOU;
@@ -238,7 +264,7 @@ class Palavra {
 		$this->tamanho = strlen($palavra);
 		$this->posX = VAZIO;
 		$this->posY = VAZIO;
-		$this->direcao = "não definido";
+		$this->direcao = INDEFINIDO;
 	}
 
 	public function resumo() {
