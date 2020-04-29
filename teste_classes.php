@@ -42,8 +42,4 @@ mp\listar($tabuleiro->coordenada(25));
 // Checar matriz
 mp\listar($tabuleiro->getMatriz());
 echo $tabuleiro->getTabuleiro();
-
-// Gerar tabuleiro
-$tabuleiro->gerar();
-
 ?>

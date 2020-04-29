@@ -3,12 +3,16 @@
 include_once 'funcoes_uteis.php';
 use ManipulaPalavras as mp;
 
+define("SUCESSO", 1);
+define("FALHOU", 0);
+define("VAZIO", -1);
+
 class Tabuleiro {
-	private $matriz;		// tabuleiro
+	private $matriz;		// tabuleiro (vetor)
 	private $dimensao;		// matriz quadrada
-	private $dados;			// conjunto de palavras
+	private $dados;			// detalhes do conjunto de palavras
 	private $quantidadePalavras;
-	private $palavras; 		// procuradas
+	private $palavras; 		// array de Objetos Palavra
 	private $celulaVazia;
 
     function __construct($conjuntoPalavras) {
@@ -22,11 +26,11 @@ class Tabuleiro {
     	// Dados
     	$this->dados = mp\resumo($conjuntoPalavras);
     	$this->quantidadePalavras = $this->dados['TotalPalavras'];
-    	$this->dimensao = $this->dados['TamanhoMaior'];
+    	$this->dimensao = $this->dados['TamanhoMaior'] * 2;
 
     	// Inicializando tabuleiro
     	$celulas = $this->dimensao * $this->dimensao;    	
-    	$this->matriz = array_fill(0, $celulas, 0);
+    	$this->matriz = array_fill(0, $celulas, VAZIO);
 
     	// Carregando palavras
     	$palavras = array();
@@ -39,9 +43,12 @@ class Tabuleiro {
     function __destruct() {}
 
     public function gerar() {
+    	$tentativas = 10;
     	foreach ($this->palavras as $palavra) {
-    		print_r($palavra->resumo());
-    		$this->inserir($palavra);
+    		for ($i=0; $i < $tentativas; $i++) {
+    			$resultado = $this->inserir($palavra);
+    			if ($resultado) break;
+    		}
     	}
     }
 
@@ -69,7 +76,7 @@ class Tabuleiro {
 		$resultado = "";
 		for ($i=0, $j=0; $i < count($this->matriz); $i++) { 
 			if (is_string($this->matriz[$i])) {
-				$resultado = $resultado.$matriz[$i];
+				$resultado = $resultado.$this->matriz[$i];
 			} else {
 				$resultado = $resultado.$this->celulaVazia;
 			}
@@ -92,27 +99,82 @@ class Tabuleiro {
 	}
 
 	private function inserir($palavra) {
-    	// Randomizar coordenada
-    	$x = rand(0, $this->dimensao);
-    	$y = rand(0, $this->dimensao);
-    	echo $x.",".$y."\n";
-    	$posicao = $this->posicao($x, $y);
-    	echo ($posicao)."\n";
-    	print_r($this->coordenada($posicao));
+    	// Testar inserção
+    	$x = rand(0, $this->dimensao - 1);
+    	$y = rand(0, $this->dimensao - 1);  		
+		$resultado = $this->inserirVertical($palavra, $x, $y);
+		if ($resultado) return SUCESSO;
+		$resultado = $this->inserirHorizontal($palavra, $x, $y);
+		if ($resultado) return SUCESSO;
+		return FALHOU;
+    }
+
+    private function inserirVertical($palavra, $x, $y) {	
+    	if (!$this->posicaoValida($x, $y)) return FALHOU;
+    	if (!$this->posicaoValida($x, $y + $palavra->tamanho)) return FALHOU;
+
+    	// Offset
+		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
+			$c = $palavra->palavra[$i];
+			$p = $this->posicao($x, $y + $i);
+			if ($this->matriz[$p] == $c) continue;
+			if (is_string($this->matriz[$p])) return FALHOU;
+		} 
+
+		// Inserir
+    	$palavra->posX = $x;
+    	$palavra->posY = $y;
+		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
+			$c = $palavra->palavra[$i];
+			$p = $this->posicao($x, $y + $i);
+			$this->matriz[$p] = $c;
+		}
+
+    	return SUCESSO;	
+    }
+
+    private function inserirHorizontal($palavra, $x, $y) {	
+    	if (!$this->posicaoValida($x, $y)) return FALHOU;
+    	if (!$this->posicaoValida($x + $palavra->tamanho, $y)) return FALHOU;
+
+    	// Offset
+		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
+			$c = $palavra->palavra[$i];
+			$p = $this->posicao($x + $i, $y);
+			if ($this->matriz[$p] == $c) continue;
+			if (is_string($this->matriz[$p])) return FALHOU;
+		} 
+
+		// Inserir
+    	$palavra->posX = $x;
+    	$palavra->posY = $y;
+		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
+			$c = $palavra->palavra[$i];
+			$p = $this->posicao($x + $i, $y);
+			$this->matriz[$p] = $c;
+		}
+
+    	return SUCESSO;	
+    }    
+
+    private function posicaoValida($x, $y) {
+    	if ($x < 0 or $x > $this->dimensao) return FALHOU;
+    	if ($y < 0 or $y > $this->dimensao) return FALHOU;
+    	return SUCESSO;
     }
 }
 
 class Palavra {
-	private $palavra;
-	private $tamanho;
-	private $posX;
-	private $posY;
+	public $palavra;
+	public $tamanho;
+	public $posX;
+	public $posY;
 
 	function __construct($palavra) {
 		$this->palavra = $palavra;
 		$this->tamanho = strlen($palavra);
-		$this->posX = -1;
-		$this->posY = -1;
+		$this->posX = VAZIO;
+		$this->posY = VAZIO;
 	}
 
 	public function resumo() {
