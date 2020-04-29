@@ -1,7 +1,6 @@
 <?php
 // Carregar funções
 include_once 'procura_palavras.php';
-use ManipulaPalavras as mp;
 
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
@@ -11,11 +10,23 @@ $conjuntoPalavras = array(
 	"Banana",
 	"Jabuticaba",
 	"Abacate",
-	"Noz pecan"
+	"Noz pecan",
 );
 
 // Objeto Tabuleiro
 $tabuleiro = new Tabuleiro($conjuntoPalavras);
 $tabuleiro->gerar();
-echo $tabuleiro->getTabuleiro();
+// $tabuleiro->setCelulaVazia('*');
+$tabuleiro->setEntreCelulas(' ');
+
+echo "Tabuleiro:\n";
+$tabuleiro->visualizar();
+
+$dados = $tabuleiro->resumo();
+echo "Palavras: ".$dados['palavras']."\n";
+for ($i=1; $i < count($dados) - 1; $i++) { 
+	echo $dados[$i]['palavra']." em (";
+	echo $dados[$i]['X'].",".$dados[$i]['Y'].") na ";
+	echo $dados[$i]['direcao']."\n";
+}
 ?>
