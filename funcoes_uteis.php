@@ -31,9 +31,15 @@ namespace ManipulaPalavras {
 		return $novoConjunto;
 	}
 
-	// Tornar todas palavras minúsculas
+	// Tornar todas as palavras minúsculas
 	function converterMinusculas($conjuntoPalavras) {
-		$conjuntoPalavras =  array_map('strtolower', $conjuntoPalavras);
+		$conjuntoPalavras =  array_map('mb_strtolower', $conjuntoPalavras);
+		return $conjuntoPalavras;
+	}
+
+	// Tornar todas as palavras minúsculas
+	function converterMaiusculas($conjuntoPalavras) {
+		$conjuntoPalavras =  array_map('mb_strtoupper', $conjuntoPalavras);
 		return $conjuntoPalavras;
 	}
 

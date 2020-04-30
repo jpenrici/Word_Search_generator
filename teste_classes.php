@@ -3,6 +3,9 @@
 include_once 'procura_palavras.php';
 use ManipulaPalavras as mp;
 
+// Define o local para Português(Brasil)
+setlocale(LC_ALL, 'pt_BR.utf8');
+
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
 	// 09 dados válidos
@@ -40,6 +43,10 @@ echo "25    :\n";
 mp\listar($tabuleiro->coordenada(25));
 
 // Checar matriz
-mp\listar($tabuleiro->getMatriz());
-echo $tabuleiro->getTabuleiro();
+if (empty($tabuleiro->getMatriz))
+	echo "Matriz vazia. Nada a exibir.";
+else {
+	mp\listar($tabuleiro->getMatriz());
+	echo $tabuleiro->getTabuleiro();
+}
 ?>

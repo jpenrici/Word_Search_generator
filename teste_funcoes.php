@@ -3,6 +3,9 @@
 include_once 'funcoes_uteis.php';
 use ManipulaPalavras as mp;
 
+// Define o local para Português(Brasil)
+setlocale(LC_ALL, 'pt_BR.utf8');
+
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
 	"Acerola",
@@ -34,6 +37,9 @@ mp\listar(mp\resumo(mp\retirarDuplicatas($conjuntoPalavras)));
 
 // Converter para minúsculas
 mp\listar(mp\converterMinusculas($conjuntoPalavras));
+
+// Converter para maiúsculas
+mp\listar(mp\converterMaiusculas($conjuntoPalavras));
 
 // Retirar espaços no final das palavras
 echo "Comparativo:\n";

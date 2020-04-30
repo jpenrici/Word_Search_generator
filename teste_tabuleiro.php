@@ -2,6 +2,9 @@
 // Carregar funções
 include_once 'procura_palavras.php';
 
+// Define o local para Português(Brasil)
+setlocale(LC_ALL, 'pt_BR.utf8');
+
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
 	"Acerola",
@@ -15,17 +18,19 @@ $conjuntoPalavras = array(
 	"Noz pecan",
 	"Jabuticaba",
 	"Uva",
-	"Manga"
+	"Manga",
 );
 
 // Tentativas para inserção de todas as palavras
-$tentativas = 100;
+$tentativas = 10;
+$porcentagem = 0;
 
-for ($i=1; $i <= $tentativas; $i++) {
+for ($i=0; $i < $tentativas; $i++) {
 	// Objeto Tabuleiro
 	$tabuleiro = new Tabuleiro($conjuntoPalavras);
 	// $tabuleiro->setCelulaVazia('*');
-	$tabuleiro->setEntreCelulas(';');	// para saída CSV	
+	$tabuleiro->setEntreCelulas(';');	// para saída CSV
+	$tabuleiro->setPorcentagem($porcentagem);	
 	$tabuleiro->gerar();
 	$dados = $tabuleiro->resumo();
 	$palavras = $dados['palavras']; 
@@ -39,7 +44,9 @@ $tabuleiro->visualizar();
 echo "----------\n";
 echo "Palavras  : $palavras\n";
 echo "Inseridas : $inseridos\n";
-echo "Tentativas: $i\n";
+if ($i > 0) {
+	echo "Tentativas: $i\n";
+}
 echo "----------\n";
 
 for ($i=1; $i < $dados['palavras']; $i++) { 

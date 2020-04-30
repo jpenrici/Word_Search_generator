@@ -11,20 +11,28 @@ define("PORCENTAGEM", 25);	// acrescimo na dimensão da matriz
 define("INDEFINIDO", "não definido");
 
 class Tabuleiro {
-	private $matriz;		// tabuleiro (vetor)
+
+	// Tabuleiro
+	private $matriz;		// vetor 
 	private $dimensao;		// matriz quadrada
 	private $dados;			// detalhes do conjunto de palavras
-	private $quantidadePalavras;
 	private $palavras; 		// array de Objetos Palavra
-	private $celulaVazia;	// marcador de célula vazia
-	private $entreCelulas;	// caracter extra
-	private $porcentagem;	// para regular dimensao
+	private $quantidadePalavras;
+
+	// Configuração
+	private $celulaVazia;		// marcador de célula vazia
+	private $entreCelulas;		// caracter extra
+	private $porcentagem;		// regular dimensao
 
     function __construct($conjuntoPalavras) {
 
     	// Configuração de Visualização
     	$this->celulaVazia = "";	// randomize letras
     	$this->entreCelulas = "";
+    	$this->incluirIndices = false;
+
+    	// Configuração para Dimensão
+    	$this->porcentagem = PORCENTAGEM;
 
     	// Namespace ManipulaPalavras
     	$conjuntoPalavras = mp\preparar($conjuntoPalavras);
@@ -33,11 +41,6 @@ class Tabuleiro {
     	$this->dados = $conjuntoPalavras['Resumo'];
     	$this->quantidadePalavras = $this->dados['TotalPalavras'];
     	$this->dimensao = $this->dados['TamanhoMaior'];
-    	$this->dimensao += intval($this->dimensao * PORCENTAGEM / 100);
-
-    	// Inicializando tabuleiro
-    	$celulas = $this->dimensao * $this->dimensao;    	
-    	$this->matriz = array_fill(0, $celulas, VAZIO);
 
     	// Carregando conjunto de palavras
     	$palavras = array();
@@ -51,6 +54,16 @@ class Tabuleiro {
 
     // Inserir as palavras na matriz de forma aleatória
     public function gerar() {
+
+    	// Dimensionar tabuleiro
+    	$aumento = $this->dimensao * $this->porcentagem / 100;
+    	$this->dimensao += intval($aumento); 	
+
+    	// Inicializando tabuleiro (matriz quadrada)
+    	$celulas = $this->dimensao * $this->dimensao;    	
+    	$this->matriz = array_fill(0, $celulas, VAZIO);
+
+    	// Preencher
     	foreach ($this->palavras as $palavra) {
     		for ($i=0; $i < TENTATIVAS; $i++) {
     			$resultado = $this->inserir($palavra);
@@ -84,6 +97,15 @@ class Tabuleiro {
 		if (is_string($caracter)) 
 			$this->entreCelulas = $caracter;
 	}
+
+    public function setPorcentagem($porcentagem) {
+    	if (!is_int($porcentagem) or 			// preferencialmente INT
+    		$porcentagem < PORCENTAGEM or 		// valor mínimo
+			$porcentagem > 300) 				// três vezes maior
+			$this->porcentagem = PORCENTAGEM;	// valor padrão
+		else
+			$this->porcentagem = $porcentagem;
+    }	
 
 	// Retorna os detalhes do conjunto de palavras
 	public function getDados() {
@@ -169,14 +191,16 @@ class Tabuleiro {
 		return FALHOU;
     }
 
-    private function inserirVertical($palavra, $x, $y) {	
+    private function dispor($palavra, $x, $y, $vertical, $horizontal, $texto) {
+    	$limiteV = $palavra->tamanho * $vertical;
+    	$limiteH = $palavra->tamanho * $horizontal;	
     	if (!$this->posicaoValida($x, $y)) return FALHOU;
-    	if (!$this->posicaoValida($x, $y + $palavra->tamanho)) return FALHOU;
+    	if (!$this->posicaoValida($x + $limiteH, $y + $limiteV)) return FALHOU;
 
     	// Offset
 		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
 			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x, $y + $i);
+			$p = $this->posicao($x + $i * $horizontal, $y + $i * $vertical);
 			if ($this->matriz[$p] == $c) continue;
 			if (is_string($this->matriz[$p])) return FALHOU;
 		} 
@@ -184,65 +208,33 @@ class Tabuleiro {
 		// Inserir
     	$palavra->posX = $x;
     	$palavra->posY = $y;
-    	$palavra->direcao = "vertical para baixo";
+    	$palavra->direcao = $texto;
 		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
 			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x, $y + $i);
+			$p = $this->posicao($x + $i * $horizontal, $y + $i * $vertical);
 			$this->matriz[$p] = $c;
 		}
 
     	return SUCESSO;	
+    }      
+
+    private function inserirVertical($palavra, $x, $y) {	
+		$direcao = "vertical para baixo";
+		$res = $this->dispor($palavra, $x, $y, 0, 1, $direcao);
+		return $res;
     }
 
     private function inserirHorizontal($palavra, $x, $y) {	
-    	if (!$this->posicaoValida($x, $y)) return FALHOU;
-    	if (!$this->posicaoValida($x + $palavra->tamanho, $y)) return FALHOU;
-
-    	// Offset
-		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
-			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x + $i, $y);
-			if ($this->matriz[$p] == $c) continue;
-			if (is_string($this->matriz[$p])) return FALHOU;
-		} 
-
-		// Inserir
-    	$palavra->posX = $x;
-    	$palavra->posY = $y;
-    	$palavra->direcao = "horizontal para direita";
-		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
-			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x + $i, $y);
-			$this->matriz[$p] = $c;
-		}
-
-    	return SUCESSO;	
+		$direcao = "horizontal para direira";
+		$res = $this->dispor($palavra, $x, $y, 1, 0, $direcao);
+		return $res;	
     }
 
-    private function inserirDiagonal($palavra, $x, $y) {	
-    	if (!$this->posicaoValida($x, $y)) return FALHOU;
-    	if (!$this->posicaoValida($x + $palavra->tamanho, $y + $palavra->tamanho)) return FALHOU;
-
-    	// Offset
-		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
-			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x + $i, $y + $i);
-			if ($this->matriz[$p] == $c) continue;
-			if (is_string($this->matriz[$p])) return FALHOU;
-		} 
-
-		// Inserir
-    	$palavra->posX = $x;
-    	$palavra->posY = $y;
-    	$palavra->direcao = "diagonal para baixo e para direira";
-		for ($i = 0; $i < strlen($palavra->palavra); $i++) {
-			$c = $palavra->palavra[$i];
-			$p = $this->posicao($x + $i, $y + $i);
-			$this->matriz[$p] = $c;
-		}
-
-    	return SUCESSO;	
-    }    
+	private function inserirDiagonal($palavra, $x, $y) {
+		$direcao = "diagonal para baixo e para direira";
+		$res = $this->dispor($palavra, $x, $y, 1, 1, $direcao);
+		return $res;
+	}
 
     // Verifica se coordenada está dentro dos limites da matriz
     private function posicaoValida($x, $y) {
