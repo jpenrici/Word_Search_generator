@@ -19,10 +19,13 @@ class Tabuleiro {
 	private $palavras; 		// array de Objetos Palavra
 	private $quantidadePalavras;
 
-	// Configuração
+	// Configuração de preenchimento
+	private $porcentagem;		// regular dimensao
+
+	// Configuração para Função getTabuleiro
 	private $celulaVazia;		// marcador de célula vazia
 	private $entreCelulas;		// caracter extra
-	private $porcentagem;		// regular dimensao
+	private $quebrarLinha;
 
     function __construct($conjuntoPalavras) {
 
@@ -30,6 +33,7 @@ class Tabuleiro {
     	$this->celulaVazia = "";	// randomize letras
     	$this->entreCelulas = "";
     	$this->incluirIndices = false;
+    	$this->quebrarLinha = true;
 
     	// Configuração para Dimensão
     	$this->porcentagem = PORCENTAGEM;
@@ -98,6 +102,10 @@ class Tabuleiro {
 			$this->entreCelulas = $caracter;
 	}
 
+	public function setQuebrarLinha($status) {
+		$this->quebrarLinha = $status;
+	}
+
     public function setPorcentagem($porcentagem) {
     	if (!is_int($porcentagem) or 			// preferencialmente INT
     		$porcentagem < PORCENTAGEM or 		// valor mínimo
@@ -139,7 +147,7 @@ class Tabuleiro {
 			}
 
 			$j++;
-			if ($j == $this->dimensao) {
+			if ($j == $this->dimensao and $this->quebrarLinha) {
 				$resultado = $resultado."\n";
 				$j = 0;
 				continue;
@@ -159,6 +167,8 @@ class Tabuleiro {
 	public function resumo() {
 		$resultado = array();
 		$resultado = array(
+			'matriz' => $this->getTabuleiro(),
+			'dimensao' => $this->dimensao, 
 			'palavras' => $this->quantidadePalavras,
 			'inseridos' => 0,
 			'falhas' => 0);

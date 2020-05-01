@@ -1,0 +1,28 @@
+Tabuleiro:
+----------
+e;d;a;b;a;c;a;x;i;g;a;r
+p;b;v;a;b;a;c;a;t;e;m;i
+m;j;s;w;v;r;r;o;j;p;e;a
+u;z;a;w;x;x;m;w;g;e;i;c
+p;b;q;b;o;g;m;v;s;n;x;e
+m;i;o;u;u;i;q;a;a;a;a;r
+n;w;r;e;v;t;a;k;n;b;t;o
+f;a;q;d;x;a;i;m;c;g;a;l
+b;a;n;a;n;a;e;c;o;h;a;a
+p;f;x;e;m;t;w;z;a;r;g;f
+n;o;z;-;p;e;c;a;n;b;a;o
+o;v;o;l;i;m;a;p;i;l;a;g
+----------
+Palavras  : 11
+Inseridas : 11
+----------
+lima em (3,11) : vertical para baixo
+abacate em (3,1) : vertical para baixo
+banana em (0,8) : vertical para baixo
+abacaxi em (2,0) : vertical para baixo
+uva em (3,5) : diagonal para baixo e para direira
+amora em (6,6) : diagonal para baixo e para direira
+jabuticaba em (1,2) : diagonal para baixo e para direira
+noz-pecan em (0,10) : vertical para baixo
+ameixa em (10,0) : horizontal para direira
+acerola em (11,2) : horizontal para direira

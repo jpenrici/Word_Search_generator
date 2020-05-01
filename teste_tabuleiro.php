@@ -30,7 +30,8 @@ for ($i=0; $i < $tentativas; $i++) {
 	$tabuleiro = new Tabuleiro($conjuntoPalavras);
 	// $tabuleiro->setCelulaVazia('*');
 	$tabuleiro->setEntreCelulas(';');	// para saída CSV
-	$tabuleiro->setPorcentagem($porcentagem);	
+	$tabuleiro->setPorcentagem($porcentagem);
+	// $tabuleiro->setQuebrarLinha(false);	
 	$tabuleiro->gerar();
 	$dados = $tabuleiro->resumo();
 	$palavras = $dados['palavras']; 

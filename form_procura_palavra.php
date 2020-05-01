@@ -13,8 +13,8 @@
 				<td>
 					<?php 
 						// Exibir a mensagem de erro ou sucesso
-						if (isset($_POST["mensagem"])) {
-							$msg = $_POST["mensagem"];
+						if (isset($_GET["mensagem"])) {
+							$msg = $_GET["mensagem"];
 							echo "<font color='red'>$msg</font><br>";
 						} else {
 							echo "<font color='blue'>Preencha as palavras separadas por vírgula.</font>";
