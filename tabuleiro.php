@@ -1,68 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-	<title>Caça Palavra</title>
-	<?php include_once 'procura_palavras.php'; ?>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Caça Palavra</title>
+    <?php include_once 'procura_palavras.php'; ?>
 </head>
 <body>
-	<?php 
-		define ("DELIMITADOR" , ';');
-		
-		$msg = "Digite palavras separadas por ponto e vírgula!";
-		if (!isset($_POST["txtConjuntoPalavras"])) {
-			header("Location:form_procura_palavra.php?mensagem=$msg");
-		}
+    <?php 
+        define ("DELIMITADOR" , ';');
+        $msg = "";
+        $erro = false;
 
-		$conjuntoPalavras = $_POST["txtConjuntoPalavras"];
+        if (!isset($_POST["txtConjuntoPalavras"])) {
+            $msg = "Nada a fazer!<br>";
+            $erro = true;
+        }
 
-		if ($conjuntoPalavras == "") {
-			header("Location:form_procura_palavra.php?mensagem=$msg");
-		}
+        $conjuntoPalavras = $_POST["txtConjuntoPalavras"];
 
-		if (substr($conjuntoPalavras, -1) == DELIMITADOR) {
-			$conjuntoPalavras = substr($conjuntoPalavras, 0, -1); 
-		}
+        if ($conjuntoPalavras == "") {
+            $msg = "Não foi digitada nenhuma palavra!<br>";
+            $erro = true;
+        }
 
-		$conjuntoPalavras = explode(";", $conjuntoPalavras);
+        if (!$erro) {   
+            if (substr($conjuntoPalavras, -1) == DELIMITADOR) {
+                $conjuntoPalavras = substr($conjuntoPalavras, 0, -1); 
+            }
 
-		// Gerar Tabuleiro
-		$tabuleiro = new Tabuleiro($conjuntoPalavras);
-		$tabuleiro->setQuebrarLinha(false);
-		$tabuleiro->gerar();
-		$resumo = $tabuleiro->resumo();
-		$dimensao = $resumo['dimensao'];
-		$vetor = $resumo['matriz'];
+            $conjuntoPalavras = explode(DELIMITADOR, $conjuntoPalavras);
 
-		// Visualizar Tabuleiro
-		echo "<h2>Resultado:</h2>";
-		echo "<table border=2>";
+            // Gerar Tabuleiro
+            $tabuleiro = new Tabuleiro($conjuntoPalavras);
+            // $tabuleiro->setCelulaVazia('*'); // visualizar preenchimento
+            $tabuleiro->setQuebrarLinha(false);
 
-		// Cabeçalho
-		echo "<tr>";
-		echo "<td></td>";
-		for ($i=0; $i < $dimensao; $i++) { 
-			echo "<td>".$i."</td>";
-		}
-		echo "</tr>";
+            $resultado = $tabuleiro->gerar();
+            if ($resultado == 0) {
+                $msg = "Entrada inváliada!";
+                $erro = true;
+            } else {
+                $resumo = $tabuleiro->resumo();
+                $dimensao = $resumo['dimensao'];
+                $vetor = $resumo['matriz'];
 
-		// Linhas
-		for ($i=0, $x=0, $y=0; $i < strlen($vetor); $i++) {
-			if ($x == 0) {
-				echo "<tr>";
-				echo "<td>$y</td>";
-			}
-			echo "<td>".$vetor[$i]."</td>";
-			$x++;
-			if ($x == $dimensao) {
-				echo "</tr>";
-				$x = 0;
-				$y++;
-			}
-		}
+                    // Visualizar Tabuleiro
+                    echo "<h2>Resultado:</h2>";
+                    echo "<table border=2>";
 
-		// Concluir
-		echo "</table>";
-	?>
+                    // Cabeçalho
+                    echo "<tr>";
+                    echo "<td></td>";
+                    for ($i=0; $i < $dimensao; $i++) { 
+                        echo "<td>".$i."</td>";
+                    }
+                    echo "</tr>";
+
+                    // Linhas
+                    for ($i=0, $x=0, $y=0; $i < strlen($vetor); $i++) {
+                        if ($x == 0) {
+                            echo "<tr>";
+                            echo "<td>$y</td>";
+                        }
+                        echo "<td>".$vetor[$i]."</td>";
+                        $x++;
+                        if ($x == $dimensao) {
+                            echo "</tr>";
+                            $x = 0;
+                            $y++;
+                        }
+                    }
+
+                    // Concluir
+                    echo "</table>";
+                }
+        }
+            
+        if ($erro) {
+            echo "<h3><font color='red'>$msg</font><h3>";
+        }
+
+        // Retornar
+        echo "<a href='form_procura_palavra.html'>Tentar novamente.</a>";
+    ?>
 </body>
 </html>

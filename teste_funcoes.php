@@ -8,16 +8,16 @@ setlocale(LC_ALL, 'pt_BR.utf8');
 
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
-	"Acerola",
-	"Ameixa",
-	"Amora",
-	"Araçá",
-	"Banana",
-	"Ananás",		
-	"Jabuticaba",
-	"Abacate     ",
-	"Noz pecan",
-	"Jabuticaba"
+    "Acerola",
+    "Ameixa",
+    "Amora",
+    "Araçá",
+    "Banana",
+    "Ananás",       
+    "Jabuticaba",
+    "Abacate     ",
+    "Noz pecan",
+    "Jabuticaba"
 );
 
 // Listar conjunto de palavras
@@ -63,4 +63,13 @@ array_push($conjuntoPalavras, 10.45);
 array_push($conjuntoPalavras, -10);
 mp\listar($conjuntoPalavras);
 mp\listar(mp\preparar($conjuntoPalavras));
+
+// Passar conjunto vazio
+mp\listar(mp\preparar(array("", "")));
+
+// Outros
+mp\listar(mp\preparar(array("a", "")));
+mp\listar(mp\preparar(array("A", "a")));
+
+echo "\nFinalizado.\n";
 ?>
