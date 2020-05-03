@@ -8,22 +8,22 @@ setlocale(LC_ALL, 'pt_BR.utf8');
 
 // Passar um conjunto de palavras
 $conjuntoPalavras = array(
-    // 09 dados válidos
-    "Acerola",
-    "Ameixa",
-    "Amora",
-    "Araçá",
-    "Banana",
-    "Ananás",       
-    "Jabuticaba",
-    "Abacate     ",
-    "Noz pecan",
-    "Jabuticaba",
-    // 04 dados inválidas
-    10.55,
-    -2020,  
-    array(1, 1),
-    array("1", "1")
+	// 10 dados válidos
+	"Acerola",
+	"Ameixa",
+	"Amora",
+	"Jaca",
+	"Banana",
+	"Mexerica",       
+	"Jabuticaba",
+	"Abacate     ",
+	"Noz pecan",
+	"Jabuticaba",
+	// 04 dados inválidas
+	10.55,
+	-2020,  
+	array(1, 1),
+	array("1", "1")
 );
 
 // Objeto Palavra
@@ -43,11 +43,21 @@ echo "25    :\n";
 mp\listar($tabuleiro->coordenada(25));
 
 // Checar matriz
-if (empty($tabuleiro->getMatriz))
-    echo "Matriz vazia. Nada a exibir.";
+$tabuleiro->gerar();
+if (empty($tabuleiro->getMatriz()))
+	echo "Matriz vazia. Nada a exibir.";
 else {
-    mp\listar($tabuleiro->getMatriz());
-    echo $tabuleiro->getTabuleiro();
+	mp\listar($tabuleiro->getMatriz());
+	echo "\n";
+	
+	echo "Tabuleiro:\n";    
+	echo $tabuleiro->getTabuleiro();
+	echo "\n";
+
+	echo "Respostas:\n";
+	$tabuleiro->setCelulaVazia('*');
+	echo $tabuleiro->getTabuleiro();
+	echo "\n";
 }
 
 echo "\nFinalizado.\n";
