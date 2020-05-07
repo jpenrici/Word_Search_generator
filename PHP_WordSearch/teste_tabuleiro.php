@@ -1,6 +1,6 @@
 <?php
 // Carregar funções
-include_once 'procura_palavras.php';
+include_once 'tabular_palavras.php';
 
 // Define o local para Português(Brasil)
 setlocale(LC_ALL, 'pt_BR.utf8');

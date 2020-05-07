@@ -1,6 +1,6 @@
 <?php
 // Carregar funções
-include_once 'procura_palavras.php';
+include_once 'tabular_palavras.php';
 use ManipulaPalavras as mp;
 
 // Define o local para Português(Brasil)

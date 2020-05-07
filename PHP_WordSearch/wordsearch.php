@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <title>Caça Palavra</title>
-    <?php include_once 'procura_palavras.php'; ?>
+    <?php include_once 'tabular_palavras.php'; ?>
 </head>
 <body>
     <?php 
@@ -81,7 +81,7 @@
         }
 
         // Retornar
-        echo "<a href='form_procura_palavra.html'>Tentar novamente.</a>";
+        echo "<a href='wordsearch.html'>Tentar novamente.</a>";
     ?>
 </body>
 </html>
