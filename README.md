@@ -4,4 +4,4 @@ Experimental Word Search generator.
 
 ## Caça-palavras
 
-Gerador de caça-palavras simples, escrito em PHP e VBA.
+Gerador de caça-palavras simples, escrito nas opções: PHP e VBA.
