@@ -93,20 +93,20 @@ Function dispor(ByRef offset As String, _
                 ByVal v As Integer, _
                 ByVal tamanho As Integer) As Boolean
     
-    Dim i, j, P As Integer
+    Dim i, j, pos As Integer
     Dim retorno As Boolean
     
     retorno = validar(texto, x, y, h, v, tamanho)
     If (retorno = True) Then
         For i = 1 To Len(texto)
-            P = posicao(x + (i - 1) * h, y + (i - 1) * v, tamanho)
-            If (Mid(offset, P, 1) <> CELULAVAZIA) And _
-               (Mid(offset, P, 1) <> Mid(texto, i, 1)) Then
+            pos = posicao(x + (i - 1) * h, y + (i - 1) * v, tamanho)
+            If (Mid(offset, pos, 1) <> CELULAVAZIA) And _
+               (Mid(offset, pos, 1) <> Mid(texto, i, 1)) Then
                 retorno = False
                 i = Len(texto) + 1 ' break
             End If
             If (retorno = True) Then
-                Mid(offset, P, 1) = Mid(texto, i, 1)
+                Mid(offset, pos, 1) = Mid(texto, i, 1)
             End If
         Next i
     End If
