@@ -1,0 +1,33 @@
+Caça-palavras:
+f,n,t,k,m,j,k,f,i,f,v,
+r,a,r,d,d,p,d,y,u,o,h,
+c,k,l,g,o,p,e,n,b,o,x,
+b,u,a,i,f,g,u,l,b,m,l,
+t,p,p,t,s,d,d,h,l,f,s,
+g,b,l,h,g,e,f,r,i,h,m,
+g,s,s,u,n,b,o,z,n,h,o,
+e,p,h,b,a,i,n,y,u,t,z,
+y,r,g,p,w,a,v,e,x,b,x,
+d,n,k,h,b,n,w,j,y,b,y,
+g,t,r,v,g,q,d,z,p,c,q,
+
+Tabuleiro:
+-----------
+-----------
+---gopenbox
+---i-------
+---t-d--l--
+--lh-e--i--
+---u-b--n--
+---bai--u--
+-----a--x--
+-----n-----
+-----------
+Palavras: 5
+Inseridas: 5
+[1] lua (3,6) : Diagonal para baixo.
+[2] linux (9,5) : Vertical para baixo.
+[3] debian (6,5) : Vertical para baixo.
+[4] openbox (5,3) : Horizontal para direita.
+[5] github (4,3) : Vertical para baixo.
+
