@@ -330,7 +330,7 @@ Sub teste()
             If (exibirResposta = True) Then
                 Cells(3 + i, 2).Value = resposta(i)
             Else
-                Cells(3 + i, 2).Value = "-"
+                Cells(3 + i, 2).Value = CELULAVAZIA
             End If
         Next i
     End If
