@@ -1,7 +1,7 @@
 # Word_Search_generator
 
-Experimental Word Search generator (PHP, VBA-Excel, LUA).
+Experimental Word Search generator (PYTHON, PHP, LUA, VBA-Excel e Basic-LibreOffice).
 
 ## Caça-palavras
 
-Gerador de caça-palavras simples, escrito nas opções: PHP, VBA-Excel e LUA.
+Gerador de caça-palavras simples, escrito nas opções: PYTHON, PHP, LUA, VBA-Excel e Basic-LibreOffice.
