@@ -1,0 +1,35 @@
+Tabuleiro:
+----------------
+--p-j-----------
+---e-a----------
+----r-b---------
+-----a-u--------
+-p------t-------
+--a------i------
+---l------c-----
+----vida---a----
+-p---araio--b---
+s-es--ç------a--
+a-lio--pão------
+p--uxl--ocarro--
+o---ae---r------
+----------------
+----------------
+
+----------------
+Palavras : 16
+Inseridos: 12
+----------------
+amor (7,11): Diagonal para baixo
+carro (10,13): Horizontal para direita
+jabuticaba (5,2): Diagonal para baixo
+lua (3,12): Diagonal para baixo
+martelo (0,0): falhou
+palhaço (2,6): Diagonal para baixo
+pão (8,12): Horizontal para direita
+peixe (2,10): Diagonal para baixo
+pera (3,2): Diagonal para baixo
+raio (7,10): Horizontal para direita
+sapo (1,11): Vertical para baixo
+sol (4,11): Diagonal para baixo
+vida (5,9): Horizontal para direita
