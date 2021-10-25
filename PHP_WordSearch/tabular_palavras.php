@@ -70,7 +70,7 @@ class Tabuleiro {
         $this->dimensao += intval($aumento);    
 
         // Inicializando tabuleiro (matriz quadrada)
-        $celulas = $this->dimensao * $this->dimensao;       
+        $celulas = $this->dimensao * $this->dimensao;
         $this->matriz = array_fill(0, $celulas, VAZIO);
 
         // Preencher
@@ -144,24 +144,26 @@ class Tabuleiro {
         $letras = "abcdefghijklmnopqrstuvwxyz";
         $caracter = $this->celulaVazia;
 
-        for ($i=0, $j=0; $i < count($this->matriz); $i++) { 
-            if (is_string($this->matriz[$i])) {
-                $resultado = $resultado.$this->matriz[$i];
-            } else {
-                if ($this->celulaVazia == "") {
-                    $caracter = $letras[rand(0, strlen($letras) - 1)];
+        if (is_array($this->matriz)) {
+            for ($i=0, $j=0; $i < count($this->matriz); $i++) { 
+                if (is_string($this->matriz[$i])) {
+                    $resultado = $resultado.$this->matriz[$i];
+                } else {
+                    if ($this->celulaVazia == "") {
+                        $caracter = $letras[rand(0, strlen($letras) - 1)];
+                    }
+                    $resultado = $resultado.$caracter;
                 }
-                $resultado = $resultado.$caracter;
-            }
 
-            $j++;
-            if ($j == $this->dimensao and $this->quebrarLinha) {
-                $resultado = $resultado."\n";
-                $j = 0;
-                continue;
-            }
+                $j++;
+                if ($j == $this->dimensao and $this->quebrarLinha) {
+                    $resultado = $resultado."\n";
+                    $j = 0;
+                    continue;
+                }
 
-            $resultado = $resultado.$this->entreCelulas;
+                $resultado = $resultado.$this->entreCelulas;
+            }
         }
         return $resultado;
     }
@@ -210,10 +212,10 @@ class Tabuleiro {
 
     /*
      * $palavras   : objeto Palavra
-     * $x,$y       : coordenada na matriz       
+     * $x,$y       : coordenada na matriz
      * $horizontal : salto na horizontal
      * $vertical   : salto na vertical
-     * $texto      : mensagem de direção    
+     * $texto      : mensagem de direção
      */
     private function dispor($palavra, $x, $y, $horizontal, $vertical, $texto) {
         $limiteV = $palavra->tamanho * $vertical;
@@ -248,7 +250,7 @@ class Tabuleiro {
     }      
 
     // Função dispor($palavra, $x, $y, $horizontal, $vertical, $texto)
-    private function inserirVertical($palavra, $x, $y) {    
+    private function inserirVertical($palavra, $x, $y) {
         $direcao = "vertical para baixo";
         $res = $this->dispor($palavra, $x, $y, 0, 1, $direcao);
         return $res;

@@ -23,13 +23,13 @@ namespace ManipulaPalavras {
 
     // Tornar todas as palavras minúsculas
     function converterMinusculas($conjuntoPalavras) {
-        $conjuntoPalavras =  array_map('mb_strtolower', $conjuntoPalavras);
+        $conjuntoPalavras =  array_map('strtolower', $conjuntoPalavras);
         return $conjuntoPalavras;
     }
 
     // Tornar todas as palavras minúsculas
     function converterMaiusculas($conjuntoPalavras) {
-        $conjuntoPalavras =  array_map('mb_strtoupper', $conjuntoPalavras);
+        $conjuntoPalavras =  array_map('strtoupper', $conjuntoPalavras);
         return $conjuntoPalavras;
     }
 
@@ -48,7 +48,7 @@ namespace ManipulaPalavras {
     // Trocar espaços das palavras por string
     function trocarEspacos($conjuntoPalavras, $texto) {
         $conjuntoPalavras = retirarEspacosFinais($conjuntoPalavras);
-        $conjuntoPalavras = retirarEspacosIniciais($conjuntoPalavras);  
+        $conjuntoPalavras = retirarEspacosIniciais($conjuntoPalavras);
         for ($i=0; $i < count($conjuntoPalavras); $i++) {
             $espaco = false;
             $novaPalavra = "";
@@ -124,7 +124,7 @@ namespace ManipulaPalavras {
         if (!empty($conjuntoPalavras)) {
             $conjuntoPalavras = retirarDadosInválidos($conjuntoPalavras);
             $conjuntoPalavras = trocarEspacos($conjuntoPalavras, "-");
-            $conjuntoPalavras = converterMinusculas($conjuntoPalavras);         
+            $conjuntoPalavras = converterMinusculas($conjuntoPalavras);
             $conjuntoPalavras = retirarDuplicatas($conjuntoPalavras);
             $conjuntoPalavras = embaralhar($conjuntoPalavras);
         }
